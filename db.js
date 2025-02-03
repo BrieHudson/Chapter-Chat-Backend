@@ -15,16 +15,18 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
       require: true,
       rejectUnauthorized: false
     },
-    statement_timeout: 60000
+    statement_timeout: 60000,
+    connectTimeout: 60000,
+    application_name: 'chapter_chatter'
   },
   pool: {
-    max: 10,        
-    min: 2,          
-    idle: 20000,     
-    acquire: 60000   
+    max: 10,
+    min: 2,
+    idle: 20000,
+    acquire: 60000
   },
-  logging: (msg) => console.log('Sequelize Log:', msg),  
-  retry: {           
+  logging: (msg) => console.log('Sequelize Log:', msg),
+  retry: {
     max: 3,
     match: [
       /SequelizeConnectionError/,
@@ -39,45 +41,7 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
   }
 });
 
-// Enhanced test connection function
-async function testConnection() {
-  try {
-    await sequelize.authenticate();
-    console.log('Database connection has been established successfully.');
-    console.log('Connection Info:', {
-      host: sequelize.config.host,
-      port: sequelize.config.port,
-      database: sequelize.config.database,
-      ssl: sequelize.options.dialectOptions.ssl.require ? 'enabled' : 'disabled'
-    });
-    return true;
-  } catch (error) {
-    console.error('Unable to connect to the database:', {
-      error: error.message,
-      name: error.name,
-      code: error.original?.code,
-      detail: error.original?.detail
-    });
-    return false;
-  }
-}
-
-// Added health check function
-async function healthCheck() {
-  try {
-    await sequelize.query('SELECT 1');
-    return true;
-  } catch (error) {
-    console.error('Health check failed:', error);
-    return false;
-  }
-}
-
-module.exports = { 
-  sequelize,
-  testConnection,
-  healthCheck
-};
+module.exports = { sequelize };
 
 
 
