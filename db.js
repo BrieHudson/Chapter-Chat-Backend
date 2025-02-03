@@ -13,25 +13,20 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialectOptions: {
     ssl: {
       require: true,
-      rejectUnauthorized: false,
-      ca: null,
-      key: null,
-      cert: null,
+      rejectUnauthorized: false
     },
     statement_timeout: 60000,
     connectTimeout: 60000,
-    application_name: 'chapter_chatter'
   },
-  ssl: true,
   pool: {
     max: 10,
     min: 2,
     idle: 20000,
     acquire: 60000
   },
-  logging: (msg) => console.log('Sequelize Log:', msg),
+  logging: false, // Disable logging for production
   retry: {
-    max: 3,
+    max: 5,
     match: [
       /SequelizeConnectionError/,
       /SequelizeConnectionRefusedError/,
