@@ -1,9 +1,8 @@
 const fs = require('fs');
 const path = require('path');
-const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(path.resolve(__dirname, '../config/sequelize.config.js'))[env];
+const { sequelize, Sequelize } = require('./db');  // Import from db.js
 const db = {};
 
 console.log('Starting database initialization...');
@@ -27,7 +26,8 @@ const modelFiles = fs.readdirSync(__dirname)
     return (file.indexOf('.') !== 0) && 
            (file !== basename) && 
            (file.slice(-3) === '.js') && 
-           (file !== 'index.js');
+           (file !== 'index.js') &&
+           (file !== 'db.js');  // Exclude db.js
   });
 
 console.log('Model files found:', modelFiles);
