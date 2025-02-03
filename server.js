@@ -11,7 +11,7 @@ const app = require('./app');
 const { testConnection } = require('./db');
 const syncDatabase = require('./syncDatabase');
 
-const PORT = 5012;
+const PORT = process.env.PORT;
 
 async function startServer() {
   try {
