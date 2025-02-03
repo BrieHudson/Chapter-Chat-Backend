@@ -22,13 +22,6 @@ async function startServer() {
     const dbUrl = new URL(process.env.DATABASE_URL);
     console.log('Database host:', dbUrl.hostname);
     console.log('Database port:', dbUrl.port);
-    
-    // Test database connection
-    console.log('Testing database connection...');
-    const connected = await testConnection();
-    if (!connected) {
-      throw new Error('Failed to establish database connection');
-    }
 
     // Start server
     const server = app.listen(PORT, () => {
