@@ -1,26 +1,30 @@
 const { Sequelize } = require('sequelize');
+require('dotenv').config();
 
 console.log('Initializing database connection...');
 
-// Parse the database URL
-const dbUrl = process.env.DATABASE_URL;
+// Check if DATABASE_URL exists
+if (!process.env.DATABASE_URL) {
+  console.error('DATABASE_URL environment variable is not set');
+  process.exit(1);
+}
 
-const sequelize = new Sequelize(dbUrl, {
+// In db.js, modify the Sequelize initialization:
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: 'postgres',
-  protocol: 'postgres',
   dialectOptions: {
     ssl: {
       require: true,
       rejectUnauthorized: false
-    },
-    keepAlive: true
+    }
   },
   pool: {
     max: 5,
     min: 0,
-    acquire: 30000,
-    idle: 10000
-  }
+    idle: 10000,
+    acquire: 30000
+  },
+  logging: console.log
 });
 
 const testConnection = async () => {

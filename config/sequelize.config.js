@@ -2,19 +2,17 @@ require('dotenv').config();
 
 const commonConfig = {
   dialect: 'postgres',
-  protocol: 'postgres',
   dialectOptions: {
     ssl: {
       require: true,
       rejectUnauthorized: false
-    },
-    keepAlive: true
+    }
   },
   pool: {
     max: 5,
     min: 0,
-    acquire: 30000,
-    idle: 10000
+    idle: 10000,
+    acquire: 30000
   }
 };
 
@@ -32,6 +30,7 @@ module.exports = {
     ...commonConfig,
   }
 };
+
 
 
 
