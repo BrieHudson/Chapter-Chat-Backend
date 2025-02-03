@@ -8,22 +8,17 @@ const db = {};
 
 console.log('Starting database initialization...');
 
-let sequelize;
-if (config.use_env_variable) {
-  console.log('Using environment variable for database connection');
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-  console.log('Using direct configuration for database connection');
-  sequelize = new Sequelize(config.database, config.username, config.password, {
-    ...config,
-    logging: console.log // Enable SQL query logging
-  });
-}
-
 // Test database connection
 sequelize.authenticate()
   .then(() => console.log('Database connection established'))
-  .catch(err => console.error('Unable to connect to database:', err));
+  .catch(err => {
+    console.error('Unable to connect to database:', {
+      error: err.message,
+      name: err.name,
+      code: err.original?.code,
+      detail: err.original?.detail
+    });
+  });
 
 // Import models
 console.log('Reading model files...');

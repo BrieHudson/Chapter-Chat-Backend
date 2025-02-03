@@ -8,7 +8,7 @@ process.on('uncaughtException', (error) => {
 });
 
 const app = require('./app');
-const { testConnection, sequelize } = require('./db');
+const { sequelize } = require('./db');
 const syncDatabase = require('./syncDatabase');
 
 const PORT = process.env.PORT || 5012;
