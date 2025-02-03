@@ -2,12 +2,8 @@ require('dotenv').config();
 
 const commonConfig = {
   dialect: 'postgres',
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false
-    }
-  },
+  dialectModule: require('pg'),
+  // Remove the entire dialectOptions block
   pool: {
     max: 5,
     min: 0,

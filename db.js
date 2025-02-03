@@ -3,42 +3,39 @@ require('dotenv').config();
 
 console.log('Initializing database connection...');
 
+if (!process.env.DATABASE_URL) {
+  console.error('DATABASE_URL environment variable is not set');
+  process.exit(1);
+}
+
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: 'postgres',
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false
-    },
-    keepAlive: true
-  },
   pool: {
     max: 5,
     min: 0,
     idle: 10000,
     acquire: 30000
   },
-  // Force IPv4
-  host: process.env.DATABASE_URL.match(/[@](.+)[:]/)[1],
-  protocol: 'tcp',
-  dialectModule: require('pg')
+  logging: console.log
 });
 
-const testConnection = async () => {
+// Test connection function
+async function testConnection() {
   try {
     await sequelize.authenticate();
-    console.log('Database connection established successfully.');
+    console.log('Database connection has been established successfully.');
     return true;
   } catch (error) {
-    console.error('Unable to connect to the database:');
-    console.error('Error name:', error.name);
-    console.error('Error message:', error.message);
-    console.error('Full error:', error);
+    console.error('Unable to connect to the database:', error);
     return false;
   }
+}
+
+module.exports = { 
+  sequelize,
+  testConnection
 };
 
-module.exports = { sequelize, testConnection };
 
 
 
