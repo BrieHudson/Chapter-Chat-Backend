@@ -30,7 +30,10 @@ const testConnection = async () => {
     console.log('Database connection established successfully.');
     return true;
   } catch (error) {
-    console.error('Unable to connect to the database:', error);
+    console.error('Unable to connect to the database:');
+    console.error('Error name:', error.name);
+    console.error('Error message:', error.message);
+    console.error('Full error:', error);
     return false;
   }
 };
