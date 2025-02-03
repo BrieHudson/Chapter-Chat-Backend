@@ -11,7 +11,7 @@ const app = require('./app');
 const { testConnection, sequelize } = require('./db');
 const syncDatabase = require('./syncDatabase');
 
-const PORT = process.env.PORT || 3001; // Added default port
+const PORT = process.env.PORT || 5012;
 
 async function startServer() {
   try {
