@@ -13,12 +13,16 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialectOptions: {
     ssl: {
       require: true,
-      rejectUnauthorized: false
+      rejectUnauthorized: false,
+      ca: null,
+      key: null,
+      cert: null,
     },
     statement_timeout: 60000,
     connectTimeout: 60000,
     application_name: 'chapter_chatter'
   },
+  ssl: true,
   pool: {
     max: 10,
     min: 2,
