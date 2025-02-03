@@ -15,7 +15,13 @@ const forumRoutes = require('./routes/forums');
 const app = express();
 
 // Middleware
-app.use(cors({ origin: 'http://localhost:3000', credentials: true })); // Enable CORS
+app.use(cors({ 
+  origin: [
+    'http://localhost:3000', 
+    'https://chapter-chat-frontend.onrender.com' 
+  ], 
+  credentials: true 
+}));
 app.use(express.json()); // Parse JSON request bodies
 
 // Routes
