@@ -10,6 +10,8 @@ router.post('/signup', async (req, res) => {
   const { username, email, password } = req.body;
   
   try {
+    console.log('Starting signup process:', { username, email });
+
     const userExists = await User.findOne({
       where: {
         [Sequelize.Op.or]: [
@@ -18,6 +20,7 @@ router.post('/signup', async (req, res) => {
         ]
       }
     });
+    console.log("User exists check:", { exists: !!userExists });
 
     if (userExists) {
       return res.status(400).json({ 
@@ -26,6 +29,7 @@ router.post('/signup', async (req, res) => {
       });
     }
 
+    console.log('Creating new user...');
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await User.create({
       username,
@@ -33,6 +37,7 @@ router.post('/signup', async (req, res) => {
       password: hashedPassword,
       tokenVersion: 0
     });
+    console.log("User created:", newUser.id);
 
     res.status(201).json({
       message: 'Account created successfully! Please log in.',
@@ -44,7 +49,12 @@ router.post('/signup', async (req, res) => {
     });
 
   } catch (err) {
-    console.error('Signup error:', err);
+    console.error('Detailed signup error:', {
+      message: err.message,
+      name: err.name,
+      stack: err.stack,
+      sequelizeError: err.original
+    });
     res.status(500).json({ 
       error: 'Something went wrong. Please try again.',
       code: 'SERVER_ERROR'
