@@ -8,6 +8,8 @@ if (!process.env.DATABASE_URL) {
   process.exit(1);
 }
 
+console.log('Attemping to connect to database...');
+
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: 'postgres',
   dialectOptions: {
@@ -19,12 +21,12 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
     connectTimeout: 60000,
   },
   pool: {
-    max: 10,
-    min: 2,
-    idle: 20000,
-    acquire: 60000
+    max: 5,
+    min: 0,
+    idle: 30000,
+    acquire: 10000
   },
-  logging: false, // Disable logging for production
+  logging: console.log,
   retry: {
     max: 5,
     match: [
